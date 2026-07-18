@@ -80,6 +80,7 @@ class Role(Base):
     )
 
 class UserRole(Base):
+    """User Roles, one user can have multiple role."""
     __tablename__ = "user_roles"
     __table_args__ = (
         UniqueConstraint(
@@ -113,5 +114,25 @@ class UserRole(Base):
         ForeignKey("auth.users.user_id"),
         nullable=False
     )
+
+    assigned_at: Mapped[datetime] = mapped_column(
+        DateTime,
+        nullable=False,
+        default=func.sysutcdatetime(),
+        server_default=func.sysutcdatetime()
+    )
+
+    user: Mapped[User] = relationship(
+        back_populates="user_roles",
+        foreign_keys=[user_id]
+    )
+
+    role: Mapped[Role] = relationship(
+        back_populates="user_roles"
+    )
+    
+    
+
+
 
 
