@@ -104,8 +104,8 @@ class UserRole(Base):
     )
 
     role_id: Mapped[int] = mapped_column(
-        BigInteger,
-        ForeignKey("auth.role_role_id"),
+        Integer,
+        ForeignKey("auth.roles.role_id"),
         nullable=False
     )
 

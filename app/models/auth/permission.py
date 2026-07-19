@@ -18,6 +18,7 @@ from app.db.base import Base
 
 if TYPE_CHECKING:
     from app.models.auth.role import Role
+    from app.models.auth.permission import Permission
 
 
 class Permission(Base):
@@ -66,13 +67,13 @@ class Permission(Base):
 
 
 class RolePermission(Base):
-    """Users can have multiple permission"""
+    """Roles can have multiple permission"""
 
     __tablename__ = "role_permissions"
     __table_args__ = (
         UniqueConstraint(
             "role_id",
-            "user_id",
+            "permission_id",
             name="uq_role_permissions_role_id_permission_id"
         ),
         {"schema": "auth"}
@@ -106,11 +107,11 @@ class RolePermission(Base):
 
 
     role: Mapped[Role] = relationship(
-        back_populates="role_permission"
+        back_populates="role_permissions"
     )
 
     permission: Mapped[Permission] = relationship(
-        back_populates="role_permission"
+        back_populates="role_permissions"
     )
 
 
