@@ -1,6 +1,6 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
-from pydantic_core.core_schema import date_schema
+
 from sqlalchemy import (
     BigInteger,
     Boolean,
@@ -9,7 +9,7 @@ from sqlalchemy import (
     Integer,
     String,
     UniqueConstraint,
-    null,
+
 )
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.sql import func
