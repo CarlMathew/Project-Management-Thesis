@@ -1,5 +1,6 @@
 from app.models.auth import (
     Permission,
+    RefreshSession,
     Role,
     RolePermission,
     User,
@@ -8,6 +9,7 @@ from app.models.auth import (
 
 __all__ = [
     "Permission",
+    "RefreshSession",
     "Role",
     "RolePermission",
     "User",
