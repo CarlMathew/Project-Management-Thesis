@@ -1,8 +1,9 @@
-from pydantic import BaseModel
+from datetime import datetime
+from pydantic import BaseModel, EmailStr
 
 
 class LoginRequest(BaseModel):
-    email:str
+    email:EmailStr
     password: str
 
 class AccessTokenResponse(BaseModel):
@@ -10,3 +11,9 @@ class AccessTokenResponse(BaseModel):
     token_type: str = "bearer"
     expires_in: int
 
+class AuthenticationResponse(AccessTokenResponse):
+    refresh_expires_at: datetime
+
+class MessageResponse(BaseModel):
+    message:str
+    

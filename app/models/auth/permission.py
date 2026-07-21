@@ -18,8 +18,7 @@ from app.db.base import Base
 
 if TYPE_CHECKING:
     from app.models.auth.role import Role
-    from app.models.auth.permission import Permission
-
+ 
 
 class Permission(Base):
     __tablename__ = "permissions"
