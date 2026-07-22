@@ -1,15 +1,37 @@
+from dataclasses import dataclass
+from datetime import UTC, datetime
+from uuid import UUID, uuid4
+
 from fastapi import HTTPException, status
+from jwt import InvalidTokenError
 from sqlalchemy.orm import Session
 
 from app.core.config import settings
-from app.core.security import create_access_token, verify_password
-from app.models import User
+from app.core.security import (
+    create_access_token,
+    create_refresh_token,
+    decode_refresh_token,
+    hash_token, 
+    utc_now_naive,
+    verify_password,
+)
+from app.models import User, RefreshSession
+from app.repositories.refresh_session_repository import RefreshSessionRepository
 from app.repositories.user_repository import UserRepository
-from app.schemas import AccessTokenResponse
-
-
+from app.schemas import (
+    AccessTokenResponse,  
+    AuthenticationResponse
+)
 
 INVALID_CREDENTIALS_MESSAGE = "Incorrect email or password"
+INVALID_REFRESH_TOKEN_MESSAGE = "Invalid token or expired refresh token"
+
+
+
+@dataclass
+class IssuedTokens:
+    response: AuthenticationResponse
+    refresh_token: str
 
 class AuthService:
     def __init__(self, db:Session) -> None:
@@ -51,6 +73,31 @@ class AuthService:
 
         return user
 
+    # # TODO: Finalize the set last login
+    # def login(
+    #     self,
+    #     *,
+    #     email: str,
+    #     password: str, 
+    #     ip_address: str | None,
+    #     user_agent: str | None
+    # ) -> IssuedTokens:
+    #     user = self.authenticate(email, password)
+
+    #     issued_tokens = self._create_new_session(
+    #         user=user,
+    #         ip_address=ip_address,
+    #         user_agent=user_agent
+    #     )
+
+    #     self.user_repository.set_last_login(
+    #         user=user,
+    #         last_login_at=utc_now_naive()
+    #     )
+
+    #     self.db.commit()
+
+    #     return issued_tokens
     
     def create_token_response(
         self,

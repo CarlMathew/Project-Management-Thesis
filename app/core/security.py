@@ -1,12 +1,12 @@
-from datetime import UTC, date, datetime, timedelta
+from datetime import UTC, datetime, timedelta
 from hashlib import sha256
 from typing import Any 
 from uuid import UUID, uuid4
 
 
 import jwt
-from jwt import InvalidTokenError, ExpiredSignatureError
-from sqlalchemy.orm import validates
+from jwt import InvalidTokenError
+
 from pwdlib import PasswordHash
 
 from app.core.config import settings
@@ -31,7 +31,15 @@ def hash_password(password: str) -> str:
     return password_hash.hash(password)
 
 
+def hash_token(token:str) -> str:
+    """
+    Create a deterministic SHA-256 hash of a token.
 
+    Refresh tokens are random, signed values. SHA-256 is appropriate here 
+    because we need to look up a token by its hash
+    """
+
+    return sha256(token.encode("utf-8")).hexdigest()
 
 def verify_password(
     plain_password: str, 
@@ -54,6 +62,7 @@ def create_access_token(subject: str, additional_claims: dict[str, Any] | None=N
     payload: dict[str, Any] = {
         "sub": subject,
         "type": "access",
+        "jti": str(uuid4),
         "iat": now,
         "exp": expires_at
     }

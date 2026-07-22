@@ -105,10 +105,14 @@ class RefreshSession(Base):
         nullable=True
     )
 
-    user_agent: Mapped[User] = relationship(
+    user: Mapped[User] = relationship(
         foreign_keys=[user_id]
     )
 
+    user_agent: Mapped[str] = mapped_column(
+        String(1000),
+        nullable=True
+    )
     @property
     def is_revoked(self) -> bool: 
         return self.revoked_at is not None
