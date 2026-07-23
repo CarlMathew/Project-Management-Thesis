@@ -1,5 +1,5 @@
 
-from datetime import UTC, datetime
+from datetime import UTC, date, datetime
 
 from sqlalchemy import select
 from sqlalchemy.orm import Session, selectinload
@@ -50,10 +50,21 @@ class UserRepository:
         return self.db.scalar(statement)
 
     
-    def update_last_login(self, user: User) -> None:
-        """Update the last login of a user."""
+    # def update_last_login(self, user: User) -> None:
+    #     """Update the last login of a user."""
 
-        user.last_login_at = datetime.now(UTC).replace(tzinfo=None)
+    #     user.last_login_at = datetime.now(UTC).replace(tzinfo=None)
         
-        self.db.commit()
-        self.db.refresh(user)
+    #     self.db.commit()
+    #     self.db.refresh(user)
+
+
+    def set_last_login(
+        self,
+        *,
+        user: User,
+        last_login_at: datetime
+    ) -> None:
+
+        user.last_login_at = last_login_at
+        self.db.add(user)

@@ -17,7 +17,7 @@ class RefreshSessionRepository:
         *,
         user_id:int,
         session_family_id: UUID,
-        token_id: str,
+        token_id: UUID,
         token_hash: str,
         expires_at: datetime,
         ip_address: str | None,
