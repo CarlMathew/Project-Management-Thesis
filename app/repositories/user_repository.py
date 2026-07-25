@@ -1,12 +1,26 @@
 
-from datetime import UTC, date, datetime
+from datetime import datetime
 
 from sqlalchemy import select
 from sqlalchemy.orm import Session, selectinload
 
 
-from app.models import UserRole, User
+from app.models import (
+    RolePermission,
+    Role,
+    UserRole, 
+    User
+)
 
+
+
+def get_user_auth_options():
+    return[
+        selectinload(User.user_roles)
+        .selectinload(UserRole.role)
+        .selectinload(Role.role_permissions)
+        .selectinload(RolePermission.permission)
+    ]
 
 class UserRepository:
 

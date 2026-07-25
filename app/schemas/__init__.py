@@ -1,9 +1,12 @@
 from app.schemas.auth import (
     AccessTokenResponse, 
     AuthenticationResponse,
+    CurrentUserResponse,
     LoginRequest, 
+    MessageResponse,
+    RefreshSessionResponse,
     RoleResponse, 
-    CurrentUserResponse
+
 )
 
 __all__ = [
@@ -11,6 +14,8 @@ __all__ = [
     "AuthenticationResponse",
     "CurrentUserResponse",
     "LoginRequest",
+    "MessageResponse",
+    "RefreshSessionResponse",
     "RoleResponse",
 
 ]

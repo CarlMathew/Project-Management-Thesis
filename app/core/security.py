@@ -62,7 +62,7 @@ def create_access_token(subject: str, additional_claims: dict[str, Any] | None=N
     payload: dict[str, Any] = {
         "sub": subject,
         "type": "access",
-        "jti": str(uuid4),
+        "jti": str(uuid4()),
         "iat": now,
         "exp": expires_at
     }
@@ -133,7 +133,7 @@ def decode_access_token(token: str) -> dict[str, Any]:
 
     return decode_token(
         token=token,
-        expected_type="access "
+        expected_type="access"
     )
 
 

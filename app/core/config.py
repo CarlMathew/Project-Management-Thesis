@@ -21,10 +21,14 @@ class Settings(BaseSettings):
         default="",
         description="Secret key used to sign JWTs"
     )
-
     jwt_algorithm: str = "HS256"
+
     access_token_expire_minutes: int = 15
     refresh_token_expired_days: int = 7
+    refresh_token_cookie_name: str = "pms_refresh_token"
+    refresh_token_cookie_path:str = "/api/v1/auth"
+    refresh_token_cookie_secure: bool = False
+    refresh_token_cookie_samesite: str = "lax"
 
     model_config = SettingsConfigDict(
         env_file=".env"

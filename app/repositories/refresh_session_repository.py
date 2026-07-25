@@ -44,12 +44,15 @@ class RefreshSessionRepository:
         token_hash: str,
     ) -> RefreshSession | None:
 
-        statement = select(RefreshSession).where(RefreshSession.token_hash == token_hash)
+        statement = (
+            select(RefreshSession)
+            .where(RefreshSession.token_hash == token_hash)
+        )
 
         return self.db.scalar(statement)
 
 
-    def active_sessions_by_user(
+    def get_active_sessions_by_user(
         self,
         user_id: int
     ) -> list[RefreshSession]:

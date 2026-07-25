@@ -1,3 +1,4 @@
+from collections.abc import Callable
 from typing import Annotated
 
 
@@ -58,3 +59,38 @@ def get_current_user(
 
 CurrentUser = Annotated[User, Depends(get_current_user)]
 
+def get_user_permission_codes(
+    user: User,
+) -> set:
+
+    return {
+        role_permission.permission.permission_code
+        for user_role in user.user_roles
+        if user_role.role.is_active
+        for role_permission in user_role.role.role_permissions
+    }
+
+
+def require_permission(
+    permission_code: str
+) -> Callable[[CurrentUser], User]:
+
+    def permission_dependency(
+        current_user: CurrentUser
+    ) -> User:
+
+        permission_codes = get_user_permission_codes(
+            current_user
+        )
+
+
+        if permission_code not in permission_codes:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail =(
+                    f"Permission required: {permission_code}"
+                )
+            )
+
+        return current_user
+    return permission_dependency

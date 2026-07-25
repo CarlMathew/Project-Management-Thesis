@@ -77,7 +77,6 @@ class AuthService:
 
         return user
 
-    # TODO: Finalize the set last login
     def login(
         self,
         *,
@@ -359,6 +358,12 @@ class AuthService:
             user_id= user_id
         )
 
+
+    def get_active_sessions(
+        self, 
+        user_id: int,
+    ) -> list[RefreshSession]:
+        return self.refresh_repository.get_active_sessions_by_user(user_id)
     
     def _create_access_token(
         self,
