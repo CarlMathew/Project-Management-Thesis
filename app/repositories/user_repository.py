@@ -46,7 +46,10 @@ class UserRepository:
         self.db.add(new_user_role)
         self.db.flush()
 
+    
         return new_user_role
+
+
     def create_user(
         self,
         user: User
@@ -57,6 +60,22 @@ class UserRepository:
         self.db.refresh(user)
         
         return user
+
+
+    def email_exist(
+        self,
+        normalized_email: str
+    ) -> bool:
+
+        statement = (
+            select(User)
+            .where(
+                User.email == normalized_email
+            )
+            .limit(1)
+        )
+
+        return bool(self.db.scalar(statement))
 
     def get_active_roles_by_ids(
         self,
@@ -70,7 +89,7 @@ class UserRepository:
             select(Role)
             .where(
                 Role.role_id.in_(role_ids),
-                Role.is_active.is_(True)
+                Role.is_active == True
             )
         )
 
@@ -102,10 +121,7 @@ class UserRepository:
         """Get user by email and check if it is not deleted"""
         statement = (
             select(User)
-            .options(
-                selectinload(User.user_roles)
-                .selectinload(UserRole.role)
-            )
+            .options(*get_user_auth_options())
             .where(
                 User.email == email.strip().lower(),
                 User.deleted_at.is_(None)
@@ -119,11 +135,8 @@ class UserRepository:
         """Get user by id and check if it is not deleted"""
         statement = (
             select(User).
-            options(
-                selectinload(User.user_roles).selectinload(
-                    UserRole.role
-                )
-            ).where(
+            options(*get_user_auth_options())
+            .where(
                 User.user_id == user_id,
                 User.deleted_at.is_(None)
             )

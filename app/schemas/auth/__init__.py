@@ -6,8 +6,12 @@ from app.schemas.auth.token import (
 
 )
 from app.schemas.auth.session import RefreshSessionResponse
-from app.schemas.auth.user import RoleResponse, CurrentUserResponse
-
+from app.schemas.auth.user import (
+    CurrentUserResponse,
+    RoleResponse,  
+    UserCreate, 
+    UserUpdate
+)
 
 __all__ = [
     "AccessTokenResponse",
@@ -17,4 +21,6 @@ __all__ = [
     "MessageResponse",
     "RefreshSessionResponse",
     "RoleResponse",
+    "UserCreate",
+    "UserUpdate"
 ]

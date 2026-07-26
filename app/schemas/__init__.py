@@ -6,6 +6,8 @@ from app.schemas.auth import (
     MessageResponse,
     RefreshSessionResponse,
     RoleResponse, 
+    UserCreate,
+    UserUpdate
 
 )
 
@@ -17,5 +19,7 @@ __all__ = [
     "MessageResponse",
     "RefreshSessionResponse",
     "RoleResponse",
+    "UserCreate",
+    "UserUpdate"
 
 ]

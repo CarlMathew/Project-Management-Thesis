@@ -52,7 +52,7 @@ class UserCreate(BaseModel):
 
     department_id: int | None = None
 
-    roles_ids: list[int] = Field(
+    role_ids: list[int] = Field(
         default_factory=list
     )
 
