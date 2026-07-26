@@ -31,7 +31,17 @@ app = FastAPI(
     openapi_url="/openapi.json"
 )
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[settings.frontend_url],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"]
+)
+
 app.include_router(api_router)
+
+
 
 @app.get("/", tags=["Root"])
 def get_root() -> dict[str, str]:
