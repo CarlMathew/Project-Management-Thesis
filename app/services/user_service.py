@@ -27,7 +27,6 @@ class UserService:
 
         normalized_email = str(payload.email).strip().lower()
 
-        print(normalized_email)
 
         if self.user_repository.email_exist(normalized_email=normalized_email):
             raise HTTPException(
