@@ -7,8 +7,17 @@ from app.models.auth import (
     UserRole
 )
 
+from app.models.config import (
+    Priority,
+    ProjectStatus,
+    TaskStatus
+)
+
 __all__ = [
     "Permission",
+    "Priority",
+    "ProjectStatus",
+    "TaskStatus", 
     "RefreshSession",
     "Role",
     "RolePermission",
