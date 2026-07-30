@@ -1,7 +1,7 @@
 
 from datetime import datetime
 
-from sqlalchemy import select
+from sqlalchemy import select, delete
 from sqlalchemy.orm import Session, selectinload
 
 
@@ -48,6 +48,23 @@ class UserRepository:
 
     
         return new_user_role
+
+    def delete_role(
+        self,
+        *,
+        user: User,
+    ) -> None:
+
+        for user_role in user.user_roles:
+            self.db.delete(user_role)
+        user.user_roles.clear()
+        self.db.flush()
+
+        # statement = delete(UserRole).where(UserRole.user_id == user_id)
+        # _ = self.db.execute(statement)
+
+        # self.db.commit()
+
 
 
     def create_user(

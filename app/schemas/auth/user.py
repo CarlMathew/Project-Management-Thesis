@@ -75,6 +75,10 @@ class UserUpdate(BaseModel):
         max_length=500
     )
 
+    role_ids: list[int] | None = Field(
+        default_factory=list
+    )
+
     department_id: int | None = None
 
     

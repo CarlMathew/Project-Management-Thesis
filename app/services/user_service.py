@@ -1,9 +1,8 @@
-from app.schemas.auth.user import UserCreate, UserUpdate
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 
 from app.core.security import hash_password, utc_now_naive
-from app.models import User
+from app.models import User, UserRole
 from app.repositories.user_repository import UserRepository
 from app.schemas import (
     UserCreate,
@@ -68,6 +67,7 @@ class UserService:
                     assigned_by = created_by
                 )
             self.db.commit()
+            self.db.refresh(user)
         
         
         except Exception:
@@ -114,7 +114,62 @@ class UserService:
         )
 
 
-    def deactive_user(
+    def update_user(
+        self,
+        *,
+        user_id: int,
+        payload: UserUpdate,
+        updated_by: int
+    ) -> User:
+        
+        user = self.get_user(user_id)
+
+        update_data = payload.model_dump(
+            exclude_unset=True
+        )
+ 
+
+        for field_name, value in update_data.items():
+
+            if isinstance(value, str) and field_name != "roles_id":
+                value = value.strip()
+
+            setattr(user, field_name, value)
+        
+        user.updated_by = updated_by
+        
+   
+        if payload.role_ids:
+            self.user_repository.delete_role(user=user)
+
+            unique_role_ids = list(set(payload.role_ids))
+
+            roles = self.user_repository.get_active_roles_by_ids(
+                unique_role_ids
+            )
+
+            if len(roles) != len(unique_role_ids):
+                raise HTTPException(
+                    status_code = status.HTTP_400_BAD_REQUEST,
+                    detail = "One or more selected roles do not exist or inactive"
+                )
+
+            for role in roles:
+                self.user_repository.add_role(
+                    user_id = user.user_id,
+                    role_id = role.role_id,
+                    assigned_by = updated_by                
+                )
+
+        self.db.add(user)
+        self.db.commit()
+        self.db.refresh(user)
+
+        return user
+
+
+
+    def deactivate_user(
         self,
         *,
         user_id: int,
@@ -124,7 +179,7 @@ class UserService:
         if user_id == deactivated_by:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Cannot deactive a own account"
+                detail="Cannot deactive your own account"
             )
         
 
@@ -165,7 +220,7 @@ class UserService:
         if user_id == activated_by:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Cannot deactive a own account"
+                detail="Cannot activate a own account"
             )
         
         user: User | None = self.user_repository.get_by_id(user_id)
@@ -173,7 +228,7 @@ class UserService:
         if user is None:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail="User not found. Please ask administrator"
+                detail="User not found."
             )
 
         if user.is_active:

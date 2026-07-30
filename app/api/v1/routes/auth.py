@@ -15,6 +15,7 @@ from sqlalchemy.orm import Session
 
 from app.api.dependencies.auth import CurrentUser
 from app.core.config import settings
+from app.core.limiter import limiter
 from app.core.security import hash_token
 
 
@@ -91,6 +92,7 @@ def build_current_user_response(
     "/login",
     response_model=AuthenticationResponse
 )
+@limiter.limit("5/minute")
 def login(
     payload: LoginRequest,
     request: Request,
@@ -118,6 +120,7 @@ def login(
     "/login-form",
     response_model=AuthenticationResponse
 )
+@limiter.limit("5/minute")
 def login_form(
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
     request: Request,
@@ -145,6 +148,7 @@ def login_form(
     "/refresh",
     response_model=AuthenticationResponse
 )
+@limiter.limit("20/minute")
 def refresh_access_token(
     request: Request,
     response: Response,
@@ -184,13 +188,16 @@ def refresh_access_token(
     "/logout",
     response_model=MessageResponse
 )
+@limiter.limit("20/minute")
 def logout(
     response: Response,
+    request:Request,
     db: Annotated[Session, Depends(get_db)],
     refresh_token: Annotated[
         str | None,
         Cookie(alias=settings.refresh_token_cookie_name),
     ] = None
+    
 ) -> MessageResponse:
     service = AuthService(db)
     service.logout(refresh_token)
@@ -205,9 +212,11 @@ def logout(
     "/logout-all",
     response_model=MessageResponse
 )
+@limiter.limit("20/minute")
 def logout_all(
     current_user: CurrentUser,
     response: Response,
+    request:Request,
     db: Annotated[Session, Depends(get_db)]
 ) -> MessageResponse:
     service = AuthService(db)
@@ -224,9 +233,11 @@ def logout_all(
     "/sessions",
     response_model = list[RefreshSessionResponse]
 )
+@limiter.limit("30/minute")
 def get_sessions(
     current_user: CurrentUser,
     db: Annotated[Session, Depends(get_db)],
+    request:Request,
     refresh_token: Annotated[
         str | None,
         Cookie(alias=settings.refresh_token_cookie_name)
@@ -264,8 +275,10 @@ def get_sessions(
     "/sessions/{refresh_session_id}",
     response_model = MessageResponse
 )
+@limiter.limit("30/minute")
 def revoke_session(
     refresh_session_id: int,
+    request:Request,
     current_user: CurrentUser,
     db: Annotated[Session, Depends(get_db)]
 ) -> MessageResponse:
@@ -288,7 +301,9 @@ def revoke_session(
     "/me",
     response_model = CurrentUserResponse,
 )
+@limiter.limit("60/minute")
 def get_me(
-    current_user: CurrentUser
+    current_user: CurrentUser,
+    request: Request
 ) -> CurrentUserResponse:
     return build_current_user_response(current_user)
