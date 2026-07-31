@@ -22,7 +22,7 @@ class ConfigurationRepository:
         statement = (
             select(ProjectStatus)
             .where(
-                ProjectStatus.is_active._is(True)
+                ProjectStatus.is_active == True
             )
             .order_by(
                 ProjectStatus.display_order,
@@ -32,13 +32,13 @@ class ConfigurationRepository:
         return list(self.db.scalars(statement))
     
 
-    def get_active_status(
+    def get_active_task_status(
         self
     ) -> list[TaskStatus]:
 
         statement = (
             select(TaskStatus)
-            .where(TaskStatus.is_active._is(True))
+            .where(TaskStatus.is_active == True)
             .order_by(
                 TaskStatus.display_order
             )
@@ -53,7 +53,7 @@ class ConfigurationRepository:
 
         statement = (
             select(Priority)
-            .where(Priority.is_active._is(True))
+            .where(Priority.is_active == True)
             .order_by(
                 Priority.priority_level
             )
@@ -71,7 +71,7 @@ class ConfigurationRepository:
             select(ProjectStatus)
             .where(
                 ProjectStatus.project_status_id == project_status_id,
-                ProjectStatus.is_active._is(True)
+                ProjectStatus.is_active == True
             )
         )
 
@@ -87,7 +87,7 @@ class ConfigurationRepository:
             select(TaskStatus)
             .where(
                 TaskStatus.task_status_id == task_status_id,
-                TaskStatus.is_active._is(True)
+                TaskStatus.is_active == True
             )
         )
 
@@ -102,7 +102,7 @@ class ConfigurationRepository:
             select(Priority)
             .where(
                 Priority.priority_id == priority_id,
-                Priority.is_active._is(True)
+                Priority.is_active == True
             )
         )
 

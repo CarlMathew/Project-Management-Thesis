@@ -11,14 +11,25 @@ from app.schemas.auth import (
 
 )
 
+from app.schemas.configuration import (
+    ConfigurationResposne,
+    PriorityResponse,
+    ProjectStatusResponse,
+    TaskStatusResponse
+)
+
 __all__ = [
     "AccessTokenResponse",
     "AuthenticationResponse",
+    "ConfigurationResposne",
     "CurrentUserResponse",
     "LoginRequest",
     "MessageResponse",
+    "PriorityResponse",
+    "ProjectStatusResponse",
     "RefreshSessionResponse",
     "RoleResponse",
+    "TaskStatusResponse",
     "UserCreate",
     "UserUpdate"
 

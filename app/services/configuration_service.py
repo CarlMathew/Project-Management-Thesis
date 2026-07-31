@@ -19,7 +19,7 @@ class ConfigurationService:
         return self.configuration_repository.get_active_project_status()
     
     def get_task_statuses(self) -> list[TaskStatus]:
-        return self.configuration_repository.get_active_status()
+        return self.configuration_repository.get_active_task_status()
 
     def get_priorities(self) -> list[Priority]:
         return self.configuration_repository.get_active_priorities()

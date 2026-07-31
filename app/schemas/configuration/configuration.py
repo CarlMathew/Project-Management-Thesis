@@ -1,9 +1,5 @@
-from _typeshed import StrPath
-from re import I
-
 from pydantic import BaseModel, ConfigDict
 
-from app.models.config import project_status
 
 
 class ProjectStatusResponse(BaseModel):
