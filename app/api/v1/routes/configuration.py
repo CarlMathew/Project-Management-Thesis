@@ -1,11 +1,10 @@
 from typing import Annotated
 
-from app.db.session import get_db
-from app.models.config.priority import Priority
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
-
+from app.db.session import get_db
+from app.models.config.priority import Priority
 from app.api.dependencies.auth import CurrentUser
 from app.services.configuration_service import ConfigurationService
 from app.schemas import (

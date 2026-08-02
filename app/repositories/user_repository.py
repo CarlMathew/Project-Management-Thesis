@@ -161,6 +161,31 @@ class UserRepository:
 
         return self.db.scalar(statement)
 
+    def get_users_by_ids(
+        self,
+        user_ids: set[int],
+    ) -> dict[int, User] | None:
+
+        if not user_ids:
+            return {}
+        
+        statement = (
+            select(User)
+            .where(
+                User.user_id.in_(user_ids),
+                User.deleted_at.is_(None)
+            )
+            
+        )
+
+
+        users = self.db.scalars(statement).all()
+
+        return {
+            user.user_id: user
+            for user in users
+        }
+
 
     def set_last_login(
         self,

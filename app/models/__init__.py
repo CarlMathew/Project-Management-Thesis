@@ -13,7 +13,12 @@ from app.models.config import (
     TaskStatus
 )
 
+from app.models.core import (
+    Department
+)
+
 __all__ = [
+    "Department",
     "Permission",
     "Priority",
     "ProjectStatus",

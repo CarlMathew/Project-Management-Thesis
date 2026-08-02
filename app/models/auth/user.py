@@ -55,6 +55,12 @@ class User(Base):
 
     department_id: Mapped[int | None] = mapped_column(
         BigInteger, 
+        ForeignKey(
+            "core.departments.department_id", 
+            ondelete="NO ACTION",
+            use_alter=True,
+            name="fk_users_department_id_departments"
+        ),
         nullable=True
     )
 

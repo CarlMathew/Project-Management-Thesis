@@ -18,11 +18,23 @@ from app.schemas.configuration import (
     TaskStatusResponse
 )
 
+
+from app.schemas.departments import (
+    DepartmentCreate,
+    DepartmentResponse,
+    DepartmentUserResponse,
+    DepartmentUpdate
+)
+
 __all__ = [
     "AccessTokenResponse",
     "AuthenticationResponse",
     "ConfigurationResposne",
     "CurrentUserResponse",
+    "DepartmentCreate",
+    "DepartmentResponse",
+    "DepartmentUserResponse",
+    "DepartmentUpdate",
     "LoginRequest",
     "MessageResponse",
     "PriorityResponse",
