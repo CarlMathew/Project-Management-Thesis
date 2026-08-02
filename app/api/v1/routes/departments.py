@@ -238,7 +238,7 @@ def activate_department(
     "/{department_id}/deactivate",
     response_model = DepartmentResponse
 )
-def activate_department(
+def deactivate_department(
     department_id: int,
     current_user: DeparmentManager,
     db: Annotated[Session, Depends(get_db)]
