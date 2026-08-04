@@ -164,7 +164,7 @@ class UserRepository:
     def get_users_by_ids(
         self,
         user_ids: set[int],
-    ) -> dict[int, User] | None:
+    ) -> dict[int, User]:
 
         if not user_ids:
             return {}
@@ -177,7 +177,6 @@ class UserRepository:
             )
             
         )
-
 
         users = self.db.scalars(statement).all()
 

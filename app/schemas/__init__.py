@@ -26,6 +26,14 @@ from app.schemas.departments import (
     DepartmentUpdate
 )
 
+
+from app.schemas.teams import (
+    TeamCreate,
+    TeamDepartmentResponse,
+    TeamResponse,
+    TeamUpdate,
+    TeamUserResponse
+)
 __all__ = [
     "AccessTokenResponse",
     "AuthenticationResponse",
@@ -42,6 +50,11 @@ __all__ = [
     "RefreshSessionResponse",
     "RoleResponse",
     "TaskStatusResponse",
+    "TeamCreate",
+    "TeamDepartmentResponse",
+    "TeamResponse",
+    "TeamUpdate",
+    "TeamUserResponse",
     "UserCreate",
     "UserUpdate"
 
