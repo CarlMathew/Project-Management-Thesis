@@ -97,7 +97,7 @@ class Team(Base):
             "auth.users.user_id",
             ondelete="NO ACTION"
         ),
-        nullable=False
+        nullable=True
     )
 
     deleted_at: Mapped[datetime] = mapped_column(

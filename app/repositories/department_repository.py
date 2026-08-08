@@ -8,6 +8,7 @@ from app.models import (
 )
 
 
+
 class DepartmentRepository:
 
     def __init__(self, db: Session):
@@ -28,6 +29,26 @@ class DepartmentRepository:
 
         return self.db.scalar(statement)
     
+    def get_departments_by_ids(
+        self,
+        department_ids: set[int]
+    ) -> dict[int, Department] | None:
+
+        if not department_ids:
+            return {}
+
+        statement = (
+            select(Department)
+            .where(Department.department_id.in_(department_ids))
+        )
+
+        departments = self.db.scalars(statement)
+
+        return {
+            department.department_id: department
+            for department in departments
+        }
+
     def get_department_by_name(
         self,
         department_name:str

@@ -14,7 +14,8 @@ from app.models.config import (
 )
 
 from app.models.core import (
-    Department
+    Department,
+    Team
 )
 
 __all__ = [
@@ -26,6 +27,7 @@ __all__ = [
     "RefreshSession",
     "Role",
     "RolePermission",
+    "Team",
     "User",
     "UserRole"
 ]

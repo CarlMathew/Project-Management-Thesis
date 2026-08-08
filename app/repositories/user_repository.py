@@ -1,7 +1,7 @@
 
 from datetime import datetime
 
-from sqlalchemy import select, delete
+from sqlalchemy import select
 from sqlalchemy.orm import Session, selectinload
 
 
