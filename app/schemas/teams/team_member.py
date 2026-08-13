@@ -45,14 +45,13 @@ class TeamMemberTeamResponse(BaseModel):
 
 
 class TeamMemberUserResponse(BaseModel):
+    team_member_id: int
     user_id: int
     full_name: str
     email:str
     job_title:str | None
     member_role: str
     capacity_percentage: float
-    team: TeamMemberTeamResponse
-
 
     model_config = ConfigDict(from_attributes=True)
 
