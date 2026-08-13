@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import TYPE_CHECKING
 
 from sqlalchemy import (
     BigInteger,
@@ -9,13 +10,14 @@ from sqlalchemy import (
 )
 
 
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.sql import func
 
 
 from app.db.base import Base
 
-
+if TYPE_CHECKING:
+    from app.models.core.team_member import TeamMember
 
 class Team(Base):
     __tablename__ = "teams"
@@ -104,3 +106,10 @@ class Team(Base):
         DateTime,
         nullable=True,
     )
+    
+    team_members: Mapped[list["TeamMember"]] = relationship(
+        back_populates="team",
+        lazy="selectin"
+    )
+
+

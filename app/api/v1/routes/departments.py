@@ -13,7 +13,7 @@ from app.db.session import get_db
 from app.api.dependencies.auth import require_permission
 from app.api.dependencies.departments import (
     build_department_response,
-    build_department_user_response
+    
 )
 from app.schemas import (
     DepartmentCreate,

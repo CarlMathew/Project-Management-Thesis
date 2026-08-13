@@ -13,6 +13,7 @@ from app.db.base import Base
 
 if TYPE_CHECKING:
     from app.models.auth.role import UserRole
+    from app.models.core.team_member import TeamMember
 
 
 class User(Base):
@@ -113,6 +114,12 @@ class User(Base):
     user_roles: Mapped[list[UserRole]] = relationship(
         back_populates="user", 
         foreign_keys="UserRole.user_id",
+        lazy="selectin"
+    )
+
+    team_members: Mapped[list["TeamMember"]] = relationship(
+        back_populates="user",
+        foreign_keys="TeamMember.user_id",
         lazy="selectin"
     )
 

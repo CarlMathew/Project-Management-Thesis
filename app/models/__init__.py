@@ -15,7 +15,8 @@ from app.models.config import (
 
 from app.models.core import (
     Department,
-    Team
+    Team,
+    TeamMember
 )
 
 __all__ = [
@@ -28,6 +29,7 @@ __all__ = [
     "Role",
     "RolePermission",
     "Team",
+    "TeamMember",
     "User",
     "UserRole"
 ]
