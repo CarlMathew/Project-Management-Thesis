@@ -28,13 +28,19 @@ from app.schemas.departments import (
 
 
 from app.schemas.teams import (
+    AddMember,
+    TeamMemberTeamResponse,
+    TeamMemberUserResponse,
     TeamCreate,
     TeamDepartmentResponse,
     TeamResponse,
     TeamUpdate,
-    TeamUserResponse
+    TeamUserResponse,
+    UpdateMember
 )
+
 __all__ = [
+    "AddMember",
     "AccessTokenResponse",
     "AuthenticationResponse",
     "ConfigurationResposne",
@@ -51,11 +57,14 @@ __all__ = [
     "RoleResponse",
     "TaskStatusResponse",
     "TeamCreate",
+    "TeamMemberTeamResponse",
+    "TeamMemberUserResponse",
     "TeamDepartmentResponse",
     "TeamResponse",
     "TeamUpdate",
     "TeamUserResponse",
     "UserCreate",
+    "UpdateMember",
     "UserUpdate"
 
 ]

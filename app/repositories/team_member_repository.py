@@ -7,16 +7,15 @@ from sqlalchemy.orm import Session
 from app.models import (
     TeamMember
 )
-from app.models.core.team import Team
 
 
 
 class TeamMemberRepository:
 
-    def __init__(self, db: Session):
-
+    def __init__(self, db: Session):\
         self.db = db
     
+
     def get_team_member_by_id(
         self,
         team_member_id: int
