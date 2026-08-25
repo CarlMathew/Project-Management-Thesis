@@ -51,7 +51,7 @@ class TeamMemberUserResponse(BaseModel):
     email:str
     job_title:str | None
     member_role: str
-    capacity_percentage: float
+    capacity_percentage: Decimal
 
     model_config = ConfigDict(from_attributes=True)
 

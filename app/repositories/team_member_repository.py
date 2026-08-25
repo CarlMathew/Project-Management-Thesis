@@ -2,11 +2,13 @@ from datetime import datetime, UTC
 
 from sqlalchemy import select
 from sqlalchemy.orm import Session
+from sqlalchemy.orm.strategy_options import joinedload
 
 
 from app.models import (
-    TeamMember
+    TeamMember,
 )
+
 
 
 
@@ -25,7 +27,7 @@ class TeamMemberRepository:
             select(TeamMember)
             .where(
                 TeamMember.team_member_id == team_member_id,
-                TeamMember.is_active.is_(True)
+                TeamMember.is_active == True
             )
         )
 
@@ -43,40 +45,38 @@ class TeamMemberRepository:
             .where(
                 TeamMember.user_id == user_id,
                 TeamMember.team_id == team_id,
-                TeamMember.is_active.is_(True)
+                TeamMember.is_active == True
             )
             .limit(1)
         )
 
         return self.db.scalar(statement) is not None
 
-    def add_member(
-        self,
-        team_member: TeamMember
-    ) -> TeamMember:
+    # def add_member(
+    #     self,
+    #     team_member: TeamMember
+    # ) -> TeamMember:
 
-        self.db.add(team_member)
-        self.db.commit()
-        self.db.refresh(team_member)
-
-        return team_member
+    #     self.db.add(team_member)
+    #     return team_member
 
 
     def list_members(
         self,
         team_id: int
-    ) -> list[TeamMember]:
+    ) -> list[TeamMember] | None:
 
 
         statement = (
             select(TeamMember)
+            .options(joinedload(TeamMember.user))
             .where(
                 TeamMember.team_id == team_id,
-                TeamMember.is_active.is_(True)
+                TeamMember.is_active == True
             )
         )
 
-        return list(self.db.scalars(statement))
+        return list(self.db.scalars(statement).all())
     
 
     def remove_member(
@@ -87,15 +87,8 @@ class TeamMemberRepository:
         team_member.is_active = False
         team_member.left_at = datetime.now(UTC)
 
-        self.db.commit()
-        self.db.refresh(team_member)
-
         return team_member 
 
-
-
-
-        
         
 
     

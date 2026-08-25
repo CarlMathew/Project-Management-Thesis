@@ -23,7 +23,7 @@ class Settings(BaseSettings):
     )
     jwt_algorithm: str = "HS256"
 
-    access_token_expire_minutes: int = 15
+    access_token_expire_minutes: int = 50
     refresh_token_expired_days: int = 7
     refresh_token_cookie_name: str = "pms_refresh_token"
     refresh_token_cookie_path:str = "/api/v1/auth"

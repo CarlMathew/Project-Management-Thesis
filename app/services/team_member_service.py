@@ -4,7 +4,6 @@ from sqlalchemy.exc import IntegrityError
 
 from app.models import (
     TeamMember,
-    User
 )
 
 from app.schemas import (
@@ -71,7 +70,7 @@ class TeamMemberService:
         )
 
         try:
-            self.team_member_repository.add_member(team_member)
+            self.db.add(team_member)
             self.db.commit()
             self.db.refresh(team_member)
 
@@ -90,17 +89,21 @@ class TeamMemberService:
     def list_members(
         self,
         team_id: int   
-    ) -> dict[int, User]:
+    ) -> list[TeamMember]:
 
         team_members = self.team_member_repository.list_members(
             team_id=team_id
         )
+    
 
-        user_ids = set(member.user_id for member in team_members)
+        if not team_members:
+            raise HTTPException(
+                status_code = status.HTTP_404_NOT_FOUND,
+                detail = f"Team doesn't have any members."
+            )
 
-        users_by_ids = self.user_repository.get_users_by_ids(user_ids)
-
-        return users_by_ids
+        
+        return team_members
 
 
     def get_member_by_id(
@@ -121,7 +124,7 @@ class TeamMemberService:
         return team_member
 
 
-    def update_members(
+    def update_member(
         self,
         payload: UpdateMember,
         team_member_id: int,
@@ -130,7 +133,7 @@ class TeamMemberService:
         team_member = (
             self
             .team_member_repository
-            .get_team_member_by_id(
+            .get_team_member_by_id( 
                 team_member_id=team_member_id
             )
         )
@@ -180,7 +183,7 @@ class TeamMemberService:
         self,
         team_member_id: int,
 
-    ) -> TeamMember:
+    ) -> None:
 
 
 
@@ -199,10 +202,11 @@ class TeamMemberService:
                 detail = f"Team Member is not active or doesn't exist"
             )
 
-
-        return self.team_member_repository.remove_member(
+        self.team_member_repository.remove_member(
             team_member=team_member
         )
+
+        self.db.commit()
 
 
     

@@ -1,5 +1,4 @@
 from app.models.auth.user import User
-from app.models.core import department
 from app.models.core.department import Department
 from app.models.core.team import Team
 
