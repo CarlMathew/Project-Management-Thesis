@@ -15,6 +15,7 @@ from app.models.config import (
 
 from app.models.core import (
     Department,
+    Project,
     Team,
     TeamMember
 )
@@ -23,6 +24,7 @@ __all__ = [
     "Department",
     "Permission",
     "Priority",
+    "Project",
     "ProjectStatus",
     "TaskStatus", 
     "RefreshSession",
