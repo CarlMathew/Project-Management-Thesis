@@ -12,8 +12,10 @@ from app.db.base import Base
 
 
 if TYPE_CHECKING:
+    from app.models.core.projects import Project
     from app.models.auth.role import UserRole
     from app.models.core.team_member import TeamMember
+
 
 
 class User(Base):
@@ -121,6 +123,12 @@ class User(Base):
         back_populates="user",
         foreign_keys="TeamMember.user_id",
         lazy="selectin"
+    )
+
+    projects: Mapped[list["Project"]] = relationship(
+        "Project",
+        foreign_keys="Project.owner_user_id",
+        back_populates="owner"
     )
 
 

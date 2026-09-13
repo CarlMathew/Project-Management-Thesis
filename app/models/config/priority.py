@@ -7,9 +7,9 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db.base import Base
 
-# if TYPE_CHECKING:
-#     from app.models.core.project import Project
-#     from app.models.core.task import Task
+if TYPE_CHECKING:
+    from app.models.core.projects import Project
+    # from app.models.core.task import Task
 
 
 class Priority(Base):
@@ -52,9 +52,10 @@ class Priority(Base):
         server_default="1"
     )
 
-    # projects: Mapped[list[Project]] = relationship(
-    #     back_populates="priority"
-    # )
+    projects: Mapped[list["Project"]] = relationship(
+        "Project",
+        back_populates="priority"
+    )
 
     # task: Mapped[list[Task]] = relationship(
     #     back_populates="priority"

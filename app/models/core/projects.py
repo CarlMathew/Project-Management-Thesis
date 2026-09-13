@@ -1,6 +1,5 @@
 from datetime import  datetime
-
-
+from typing import TYPE_CHECKING
 
 from sqlalchemy import (
     BigInteger,
@@ -16,13 +15,19 @@ from sqlalchemy import (
 
 from sqlalchemy.orm import (
     Mapped, 
-    mapped_column, 
+    mapped_column,
+    relationship, 
 
 )
 from sqlalchemy.sql import func
-
 from app.db.base import Base
 
+
+if TYPE_CHECKING:
+    from app.models.auth.user import User
+    from app.models.core.team import Team
+    from app.models.config.project_status import ProjectStatus
+    from app.models.config.priority import Priority
 
 
 class Project(Base):
@@ -48,12 +53,13 @@ class Project(Base):
     project_code: Mapped[str] = mapped_column(
         String(50),
         unique=True,
-        nullable=False
+        nullable=True
     )
 
     project_name: Mapped[str] = mapped_column(
         String(250),
-        nullable=False
+        nullable=False,
+        unique=True
     )
 
     description: Mapped[str | None] = mapped_column(
@@ -88,19 +94,17 @@ class Project(Base):
             "core.teams.team_id",
             ondelete="NO ACTION"
         ),
-        nullable=False
+        nullable=True
     )
 
     start_date: Mapped[datetime] = mapped_column(
         DateTime,
         nullable=True,
-        onupdate=func.sysutcdatetime()
     )
 
     target_end_date: Mapped[datetime] = mapped_column(
         DateTime,
         nullable=True,
-        onupdate=func.sysutcdatetime()
     )
     
     actual_end_date: Mapped[datetime] = mapped_column(
@@ -127,7 +131,8 @@ class Project(Base):
         DateTime,
         nullable=False,
         default=func.sysutcdatetime(),
-        server_default=func.sysutcdatetime()
+        server_default=func.sysutcdatetime(),
+        onupdate=func.sysutcdatetime()
     )
 
     created_by: Mapped[int] = mapped_column(
@@ -145,13 +150,38 @@ class Project(Base):
             "auth.users.user_id",
             ondelete="NO ACTION"
         ),
-        nullable=False
+        nullable=True
     ) 
 
     deleted_at: Mapped[datetime | None] = mapped_column(
         DateTime,
         nullable=True
     )
+
+    project_status: Mapped["ProjectStatus"] = relationship(
+        "ProjectStatus",
+        back_populates="projects"
+    )
+
+
+    priority: Mapped["Priority"] = relationship(
+        "Priority",
+        back_populates="projects"
+    )
+
+
+    owner: Mapped["User"] = relationship(
+        "User", 
+        foreign_keys=[owner_user_id],
+        back_populates="projects"
+    )
+
+    team: Mapped["Team"] = relationship(
+        "Team",
+        foreign_keys=[team_id],
+        back_populates="projects"
+    )
+
 
 
 

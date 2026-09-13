@@ -26,6 +26,13 @@ from app.schemas.departments import (
     DepartmentUpdate
 )
 
+from app.schemas.projects import (
+    ProjectCreate,
+    ProjectOwnerResponse,
+    ProjectResponse,
+    ProjectTeamResponse,
+    ProjectUpdate,
+)
 
 from app.schemas.teams import (
     AddMember,
@@ -52,6 +59,11 @@ __all__ = [
     "LoginRequest",
     "MessageResponse",
     "PriorityResponse",
+    "ProjectCreate",
+    "ProjectOwnerResponse",
+    "ProjectResponse",
+    "ProjectTeamResponse",
+    "ProjectUpdate",
     "ProjectStatusResponse",
     "RefreshSessionResponse",
     "RoleResponse",

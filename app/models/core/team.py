@@ -17,7 +17,9 @@ from sqlalchemy.sql import func
 from app.db.base import Base
 
 if TYPE_CHECKING:
+    from app.models.core.projects import Project
     from app.models.core.team_member import TeamMember
+
 
 class Team(Base):
     __tablename__ = "teams"
@@ -110,6 +112,12 @@ class Team(Base):
     team_members: Mapped[list["TeamMember"]] = relationship(
         back_populates="team",
         lazy="selectin"
+    )
+
+    projects: Mapped[list["Project"]] = relationship(
+        "Project",
+        foreign_keys="Project.team_id",
+        back_populates="team"
     )
 
 

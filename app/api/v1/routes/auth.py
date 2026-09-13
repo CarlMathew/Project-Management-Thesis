@@ -103,7 +103,7 @@ def login(
 
     issued_tokens = service.login(
         email=str(payload.email),
-        password = payload.password,
+        password = payload.password,    
         ip_address = get_client_ip(request),
         user_agent=get_user_agent(request)
     )

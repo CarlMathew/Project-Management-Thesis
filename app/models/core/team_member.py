@@ -28,7 +28,6 @@ if TYPE_CHECKING:
     from app.models.auth.user import User
     from app.models.core.team import Team
 
-
 class TeamMember(Base):
 
     __tablename__ = "team_members"

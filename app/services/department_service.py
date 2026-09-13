@@ -27,7 +27,7 @@ class DepartmentService:
         payload: DepartmentCreate
     ) -> Department:
 
-        existing_department =   self.department_repository.get_department_by_name(
+        existing_department = self.department_repository.get_department_by_name(
             department_name= payload.department_name
         )
 
@@ -94,12 +94,6 @@ class DepartmentService:
             offset,
             limit
         )
-
-        if not departments:
-            raise HTTPException(
-                status_code = status.HTTP_404_NOT_FOUND,
-                detail = "No department has been created"
-            )
 
         return departments
 

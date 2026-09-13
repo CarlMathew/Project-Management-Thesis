@@ -7,8 +7,8 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db.base import Base
 
-# if TYPE_CHECKING:
-#     from app.models.core.project import Project
+if TYPE_CHECKING:
+    from app.models.core.projects import Project
 
 
 class ProjectStatus(Base):
@@ -58,6 +58,7 @@ class ProjectStatus(Base):
         server_default="1"
    )
     
-    # projects: Mapped[list[Project]] = relationship(
-    #     back_populates="project_status"
-    # )
+    projects: Mapped[list["Project"]] = relationship(
+        "Project",
+        back_populates="project_status"
+    )

@@ -1,8 +1,6 @@
 from datetime import datetime
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
-from app.models.core import department
-
 
 class DepartmentCreate(BaseModel):
     department_name: str = Field(
