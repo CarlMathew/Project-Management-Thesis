@@ -10,12 +10,14 @@ from app.models.auth import (
 from app.models.config import (
     Priority,
     ProjectStatus,
-    TaskStatus
+    TaskStatus,
+    WorkItemType
 )
 
 from app.models.core import (
     Department,
     Project,
+    Task,
     Team,
     TeamMember
 )
@@ -30,8 +32,10 @@ __all__ = [
     "RefreshSession",
     "Role",
     "RolePermission",
+    "Task",
     "Team",
     "TeamMember",
     "User",
-    "UserRole"
+    "UserRole",
+    "WorkItemType"
 ]

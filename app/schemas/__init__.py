@@ -15,7 +15,8 @@ from app.schemas.configuration import (
     ConfigurationResposne,
     PriorityResponse,
     ProjectStatusResponse,
-    TaskStatusResponse
+    TaskStatusResponse,
+    WorkItemTypResponse
 )
 
 
@@ -77,6 +78,7 @@ __all__ = [
     "TeamUserResponse",
     "UserCreate",
     "UpdateMember",
-    "UserUpdate"
+    "UserUpdate",
+    "WorkItemTypResponse"
 
 ]

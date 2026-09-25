@@ -4,7 +4,8 @@ from sqlalchemy.orm import Session
 from app.models import (
     Priority,
     ProjectStatus,
-    TaskStatus
+    TaskStatus,
+    WorkItemType
 )
 from app.repositories.configuration_repository import ConfigurationRepository
 
@@ -23,6 +24,9 @@ class ConfigurationService:
 
     def get_priorities(self) -> list[Priority]:
         return self.configuration_repository.get_active_priorities()
+
+    def get_work_item_types(self) -> list[WorkItemType]:
+        return self.configuration_repository.get_active_work_item_types()
 
     
     def get_project_status(
@@ -84,6 +88,25 @@ class ConfigurationService:
             )
 
         return priority
+
+    def get_work_item_type(
+        self, 
+        work_item_type_id: int
+    ) -> WorkItemType:
+
+        work_item_type = (
+            self.configuration_repository
+            .get_work_item_type_id(work_item_type_id)
+        )
+
+        if work_item_type is None:
+
+            raise HTTPException(
+                status_code = status.HTTP_400_BAD_REQUEST,
+                detail = f" The selected work item type doesn't exist or inactive"
+            )
+
+        return work_item_type
     
 
     

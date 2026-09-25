@@ -43,8 +43,27 @@ class PriorityResponse(BaseModel):
     )
 
 
+class WorkItemTypResponse(BaseModel):
+    work_item_type_id: int
+
+    type_name: str
+    type_code: str
+    code_prefix: str
+
+    color_hex:str | None
+    icon_name: str | None
+
+    display_order:int
+    is_active: bool
+
+    model_config = ConfigDict(
+        from_attributes=True
+    )
+
+
 
 class ConfigurationResposne(BaseModel):
     project_statuses: list[ProjectStatusResponse]
     task_statuses: list[TaskStatusResponse]
     priorities: list[PriorityResponse]
+    work_item_types: list[WorkItemTypResponse]

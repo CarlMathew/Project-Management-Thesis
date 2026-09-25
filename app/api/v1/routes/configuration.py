@@ -10,7 +10,8 @@ from app.services.configuration_service import ConfigurationService
 from app.schemas import (
     PriorityResponse,
     ProjectStatusResponse,
-    TaskStatusResponse
+    TaskStatusResponse,
+    WorkItemTypResponse
 )
 from app.services.configuration_service import ConfigurationService
 
@@ -80,3 +81,24 @@ def get_priorities(
 
         for priority in config_service.get_priorities()
     ]
+
+
+@router.get(
+    "/work-item-types",
+    response_model= list[WorkItemTypResponse]
+)
+def get_work_items(
+    current_user: CurrentUser,
+    db: Annotated[Session, Depends(get_db)]
+) -> list[Priority]:
+    
+    config_service = ConfigurationService(db)
+    return [
+        WorkItemTypResponse.model_validate(
+            work_item
+        )
+
+        for work_item in config_service.get_work_item_types()
+    ]
+
+

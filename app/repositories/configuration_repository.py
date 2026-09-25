@@ -4,7 +4,8 @@ from sqlalchemy.orm import Session
 from app.models import (
     Priority,
     ProjectStatus,
-    TaskStatus
+    TaskStatus, 
+    WorkItemType
 )
 
 
@@ -61,6 +62,21 @@ class ConfigurationRepository:
 
         return list(self.db.scalars(statement))
 
+    def get_active_work_item_types(
+        self
+    ) -> list[WorkItemType]:
+
+        statement = (
+            select(WorkItemType)
+            .where(WorkItemType.is_active == True)
+            .order_by(
+                WorkItemType.display_order
+            )
+        )
+
+        return list(self.db.scalars(statement))
+        
+
     def get_project_status_id(
         self,
         project_status_id: int
@@ -110,3 +126,18 @@ class ConfigurationRepository:
         return self.db.scalar(statement)
 
 
+    def get_work_item_type_id(
+        self,
+        work_item_type_id: int
+    ) -> WorkItemType | None:
+
+        statement = (
+            select(WorkItemType)
+            .where(
+                WorkItemType.work_item_type_id == work_item_type_id,
+                WorkItemType.is_active == True
+            )
+        )
+        return self.db.scalar(statement)
+
+    
