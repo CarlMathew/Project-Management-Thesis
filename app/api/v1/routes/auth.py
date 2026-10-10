@@ -4,6 +4,7 @@ from fastapi import (
     Cookie,
     Depends,
     HTTPException,
+    Query,
     Request,
     Response,
     status
@@ -238,6 +239,8 @@ def get_sessions(
     current_user: CurrentUser,
     db: Annotated[Session, Depends(get_db)],
     request:Request,
+    offset: Annotated[int, Query(ge=0)] = 0,
+    limit: Annotated[int, Query(ge=1, le=100)] = 20,
     refresh_token: Annotated[
         str | None,
         Cookie(alias=settings.refresh_token_cookie_name)
@@ -247,7 +250,11 @@ def get_sessions(
 
     service = AuthService(db)
 
-    sessions = service.get_active_sessions(current_user.user_id)
+    sessions = service.get_active_sessions(
+        current_user.user_id,
+        offset,
+        limit
+    )
 
     current_token_hash = (
         hash_token(refresh_token)

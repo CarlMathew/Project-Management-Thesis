@@ -362,8 +362,15 @@ class AuthService:
     def get_active_sessions(
         self, 
         user_id: int,
+        offset:int = 0,
+        limit: int = 20,
+
     ) -> list[RefreshSession]:
-        return self.refresh_repository.get_active_sessions_by_user(user_id)
+        return self.refresh_repository.get_active_sessions_by_user(
+            user_id,
+            offset,
+            limit
+        )
     
     def _create_access_token(
         self,

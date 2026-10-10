@@ -54,7 +54,9 @@ class RefreshSessionRepository:
 
     def get_active_sessions_by_user(
         self,
-        user_id: int
+        user_id: int,
+        offset: int,
+        limit: int
     ) -> list[RefreshSession]:
         statement = (
             select(RefreshSession).where(
@@ -62,6 +64,8 @@ class RefreshSessionRepository:
                 RefreshSession.revoked_at.is_(None)
             )
             .order_by(RefreshSession.created_at.desc())
+            .offset(offset)
+            .limit(limit)
         )
 
         return list(self.db.scalars(statement).all())
